@@ -8,9 +8,9 @@ import librosa
 import numpy as np
 
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtCore, QtGui
+from PyQt5 import uic, QtCore, QtGui, QtWidgets
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QFont, QFontDatabase
+from PyQt5.QtGui import QFont, QFontDatabase,QMovie
 
 from tensorflow.python.keras.models import load_model
 
@@ -98,11 +98,14 @@ class Default_window(QDialog, QWidget, form_nowtrain_class):
         self.initUI()
         self.show()
 
+
+
     def initUI(self):
         self.setupUi(self)
         self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
         self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
         self.label_5.setText("실행 버튼을 누르면 기본 감지 모드가 실행됩니다.")
+
 
     def toSelectsense(self):
         if(self.threadbool==True):
@@ -115,20 +118,24 @@ class Default_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("기본 감지 모드가 실행 중 입니다.")
         self.threadbool=True
         self.worker.putimage.connect(self.putimage)
+        self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
 
 
-    def putimage(self, what):
+
+
+    def putimage(self, what,image):
         self.label_5.setText(what)
-
-
+        self.pushButton.setStyleSheet("border-image:url("+image+");border:0px;")
 
     def sensestop(self):
         quit_msg = "소리감지 기능을 종료하시겠습니까?"
-        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
-
+        reply=QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
         if self.threadbool==True and reply == QMessageBox.Yes:
-            self.label_5.setText("기본 감지 모드가 중지되었습니다.")
             self.worker.stop()
+            self.defaultwindow = Default_window()
+            self.close()
+            self.defaultwindow.exec()
+
 
 
 
@@ -182,7 +189,7 @@ class Scream_window(QDialog, QWidget, form_nowtrain_class):
 
 ########### 인공지능 백그라운드 실행 ############################
 class Aiworker(QThread):
-    putimage = pyqtSignal(str)
+    putimage = pyqtSignal(str,str)
 
     max_pad_len = 87
     num_rows = 40
@@ -227,43 +234,45 @@ class Aiworker(QThread):
             answer = self.print_prediction(filename)
             if (answer == 0):  # babycry
                 print("babycry")
-                self.putimage.emit("아기 울음소리")
+                self.putimage.emit("아기 울음소리", ".//resource//babycryim.png")
                 time.sleep(5.0)
             elif (answer == 1):  # carhorn
                 print("test1")
-                self.putimage.emit("경적 소리")
+                self.putimage.emit("경적 소리", ".//resource//horn.png")
                 time.sleep(5.0)
             elif (answer == 2):  # dogbark
                 print("test2")
-                self.putimage.emit("개 짖는 소리")
+                self.putimage.emit("개 짖는 소리",".//resource//dog.png")
                 time.sleep(5.0)
             elif (answer == 3):  # glassbreak
                 print("test3")
-                self.putimage.emit("유리 깨지는 소리")
+                self.putimage.emit("유리 깨지는 소리",".//resource//breakglass.png")
                 time.sleep(5.0)
             elif (answer == 4):  # knock
                 print("test4")
-                self.putimage.emit("노크 소리")
+                self.putimage.emit("노크 소리",".//resource//knock.png")
                 time.sleep(5.0)
             elif (answer == 5):  # meow
                 print("test5")
-                self.putimage.emit("고양이 울음소리")
+                self.putimage.emit("고양이 울음소리", ".//resource//moew.png")
                 time.sleep(5.0)
             elif (answer == 6):  # scream
                 print("test6")
-                self.putimage.emit("비명 소리")
+                self.putimage.emit("비명 소리", ".//resource//screamim.png")
                 time.sleep(5.0)
             elif (answer == 7):  # siren
                 print("test7")
-                self.putimage.emit("사이렌 소리")
+                self.putimage.emit("사이렌 소리", ".//resource//sirenim.png")
                 time.sleep(5.0)
             elif (answer == 10):
-                self.putimage.emit("기본 감지 모드가 실행 중 입니다.")
+                self.putimage.emit("기본 감지 모드가 실행 중 입니다.", ".//resource//gamzi.png")
 
     def stop(self):
         self.power=False
         self.quit()
         self.wait(3000)
+        time.sleep(2.0)
+
 
     ################## 특징 추출 함수 ######################
 

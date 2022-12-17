@@ -26,7 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">background-color:rgb(0,66,0);
+   <string notr="true">
 </string>
   </property>
   <widget class="QLabel" name="label_4">
@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>1280</width>
+     <width>1281</width>
      <height>800</height>
     </rect>
    </property>
