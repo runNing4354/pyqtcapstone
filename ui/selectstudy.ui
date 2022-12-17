@@ -25,6 +25,9 @@
   <property name="windowTitle">
    <string>Form</string>
   </property>
+  <property name="styleSheet">
+   <string notr="true">background-color:rgb(0,101,51);</string>
+  </property>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
     <rect>
@@ -51,7 +54,8 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/logo.png&quot;);</string>
+    <string notr="true">border-image:url(&quot;.//resource//logo.png&quot;);
+background : transparent</string>
    </property>
    <property name="text">
     <string/>
@@ -67,7 +71,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/backbutton.png&quot;);
+    <string notr="true">border-image:url(&quot;.//resource//backbutton.png&quot;);
 background : transparent</string>
    </property>
    <property name="text">
@@ -139,6 +143,9 @@ background : transparent</string>
      <pointsize>27</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background : transparent</string>
+   </property>
    <property name="text">
     <string>환경음 듣기</string>
    </property>
@@ -159,6 +166,9 @@ background : transparent</string>
     <font>
      <pointsize>27</pointsize>
     </font>
+   </property>
+   <property name="styleSheet">
+    <string notr="true">background : transparent</string>
    </property>
    <property name="text">
     <string>감정 맞추기</string>
@@ -181,6 +191,9 @@ background : transparent</string>
      <pointsize>27</pointsize>
     </font>
    </property>
+   <property name="styleSheet">
+    <string notr="true">background : transparent</string>
+   </property>
    <property name="text">
     <string>소리 맞추기</string>
    </property>
@@ -198,12 +211,60 @@ background : transparent</string>
    <slot>toMain()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>1224</x>
-     <y>56</y>
+     <x>1221</x>
+     <y>60</y>
     </hint>
     <hint type="destinationlabel">
-     <x>1298</x>
-     <y>60</y>
+     <x>1322</x>
+     <y>69</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>toenvironment()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>252</x>
+     <y>403</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>303</x>
+     <y>-45</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_2</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>toemotion()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>614</x>
+     <y>442</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>602</x>
+     <y>-38</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>tosound()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>924</x>
+     <y>403</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>896</x>
+     <y>-42</y>
     </hint>
    </hints>
   </connection>

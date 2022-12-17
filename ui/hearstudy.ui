@@ -38,7 +38,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/whitebox.png&quot;);</string>
+    <string notr="true">border-image:url(&quot;.//resource//whitebox.png&quot;);</string>
    </property>
    <property name="text">
     <string/>
@@ -54,7 +54,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;./resource/study.png&quot;);</string>
+    <string notr="true">border-image:url(&quot;.//resource//study.png&quot;);</string>
    </property>
    <property name="text">
     <string/>
@@ -70,7 +70,7 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/teacher.png&quot;);
+    <string notr="true">border-image:url(&quot;.//resource//teacher.png&quot;);
 background : transparent</string>
    </property>
    <property name="text">
@@ -87,7 +87,7 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/backbutton.png&quot;);
+    <string notr="true">border-image:url(&quot;.//resource//backbutton.png&quot;);
 background : transparent</string>
    </property>
    <property name="text">
@@ -104,7 +104,7 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;/Users/itaemin/PycharmProjects/pyqtcapstone/resource/playbutton.png&quot;);
+    <string notr="true">border-image:url(&quot;.//resource//playbutton.png&quot;);
 background : transparent</string>
    </property>
    <property name="text">
@@ -143,7 +143,24 @@ background : transparent</string>
   <zorder>label_5</zorder>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>pushButton_3</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>toSelectstudy()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>1221</x>
+     <y>58</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>1189</x>
+     <y>-45</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
  <slots>
   <slot>toSelectstudy()</slot>
  </slots>

@@ -8,9 +8,9 @@ import librosa
 import numpy as np
 
 from PyQt5.QtWidgets import *
-from PyQt5 import uic, QtCore, QtGui, QtWidgets
+from PyQt5 import uic, QtCore, QtGui
 from PyQt5.QtCore import *
-from PyQt5.QtGui import QFont, QFontDatabase,QMovie
+from PyQt5.QtGui import QFont, QFontDatabase
 
 from tensorflow.python.keras.models import load_model
 
@@ -35,6 +35,16 @@ form_nowtrain = resource_path(".//ui//nowtrain.ui")
 form_nowtrain_class = uic.loadUiType(form_nowtrain)[0]
 ##############################################
 
+#########   selectstudy 윈도우   ##############
+form_selectstudy = resource_path(".//ui//selectstudy.ui")
+form_selectstudy_class = uic.loadUiType(form_selectstudy)[0]
+##############################################
+
+#########   hearstudy 윈도우   ##############
+form_hearstudy = resource_path(".//ui//hearstudy.ui")
+form_hearstudy_class = uic.loadUiType(form_hearstudy)[0]
+##############################################
+
 ##############################################################################
 class Main(QDialog, QWidget, form_main_class):
     def __init__(self):
@@ -53,8 +63,58 @@ class Main(QDialog, QWidget, form_main_class):
         self.selectsense = Selectsense_window()
         self.selectsense.exec()
 
+    def toselectstudy(self):
+        self.selectstudy = Selectstudy_window()
+        self.selectstudy.exec()
+
     def finish(self):
         self.close()
+##############################################################################################
+class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
+    def __init__(self):
+        super(Hearstudy_window, self).__init__()
+        self.initUI()
+        self.show()
+
+    def initUI(self):
+        self.setupUi(self)
+        self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
+        self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+
+    def toSelectstudy(self):
+        self.close()
+
+
+
+
+#############################################################################
+#############################################################################
+class Selectstudy_window(QDialog, QWidget, form_selectstudy_class):
+    def __init__(self):
+        super(Selectstudy_window, self).__init__()
+        self.initUI()
+        self.show()
+
+    def initUI(self):
+        self.setupUi(self)
+        self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
+        self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+        self.label_6.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+        self.label_7.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+
+    def toMain(self):
+        self.close()
+
+    def toenvironment(self):
+        pass
+
+    def toemotion(self):
+        pass
+
+    def tosound(self):
+        self.hearstudy = Hearstudy_window()
+        self.hearstudy.exec()
+
 
 #############################################################################
 class Selectsense_window(QDialog, QWidget, form_trainselect_class):
@@ -142,6 +202,8 @@ class Default_window(QDialog, QWidget, form_nowtrain_class):
 
 ###########################################################################
 class Siren_window(QDialog, QWidget, form_nowtrain_class):
+    threadbool = False
+
     def __init__(self):
         super(Siren_window, self).__init__()
         self.initUI()
@@ -154,10 +216,35 @@ class Siren_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("실행 버튼을 누르면 사이렌 감지 모드가 실행됩니다.")
 
     def toSelectsense(self):
+        if (self.threadbool == True):
+            self.worker.stop()
         self.close()
+
+    def sensestart(self):
+        self.worker = Aiworker_2()
+        self.worker.start()
+        self.label_5.setText("사이렌 감지 모드가 실행 중 입니다.")
+        self.threadbool = True
+        self.worker.putimage.connect(self.putimage)
+        self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
+
+    def putimage(self, what, image):
+        self.label_5.setText(what)
+        self.pushButton.setStyleSheet("border-image:url(" + image + ");border:0px;")
+
+    def sensestop(self):
+        quit_msg = "소리감지 기능을 종료하시겠습니까?"
+        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
+        if self.threadbool == True and reply == QMessageBox.Yes:
+            self.worker.stop()
+            self.defaultwindow = Default_window()
+            self.close()
+            self.defaultwindow.exec()
 
 #############################################################################
 class Babycry_window(QDialog, QWidget, form_nowtrain_class):
+    threadbool = False
+
     def __init__(self):
         super(Babycry_window, self).__init__()
         self.initUI()
@@ -167,13 +254,38 @@ class Babycry_window(QDialog, QWidget, form_nowtrain_class):
         self.setupUi(self)
         self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
         self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
-        self.label_5.setText("실행 버튼을 누르면 아기울음 감지 모드가 실행됩니다.")
+        self.label_5.setText("실행 버튼을 누르면 아기울음소리 감지 모드가 실행됩니다.")
 
     def toSelectsense(self):
+        if (self.threadbool == True):
+            self.worker.stop()
         self.close()
+
+    def sensestart(self):
+        self.worker = Aiworker_3()
+        self.worker.start()
+        self.label_5.setText("아기울음소리 감지 모드가 실행 중 입니다.")
+        self.threadbool = True
+        self.worker.putimage.connect(self.putimage)
+        self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
+
+    def putimage(self, what, image):
+        self.label_5.setText(what)
+        self.pushButton.setStyleSheet("border-image:url(" + image + ");border:0px;")
+
+    def sensestop(self):
+        quit_msg = "소리감지 기능을 종료하시겠습니까?"
+        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
+        if self.threadbool == True and reply == QMessageBox.Yes:
+            self.worker.stop()
+            self.defaultwindow = Default_window()
+            self.close()
+            self.defaultwindow.exec()
 
 #############################################################################
 class Scream_window(QDialog, QWidget, form_nowtrain_class):
+    threadbool = False
+
     def __init__(self):
         super(Scream_window, self).__init__()
         self.initUI()
@@ -183,11 +295,35 @@ class Scream_window(QDialog, QWidget, form_nowtrain_class):
         self.setupUi(self)
         self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
         self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+        self.label_5.setText("실행 버튼을 누르면 비명 감지 모드가 실행됩니다.")
 
     def toSelectsense(self):
+        if (self.threadbool == True):
+            self.worker.stop()
         self.close()
 
-########### 인공지능 백그라운드 실행 ############################
+    def sensestart(self):
+        self.worker = Aiworker_4()
+        self.worker.start()
+        self.label_5.setText("비명 감지 모드가 실행 중 입니다.")
+        self.threadbool = True
+        self.worker.putimage.connect(self.putimage)
+        self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
+
+    def putimage(self, what, image):
+        self.label_5.setText(what)
+        self.pushButton.setStyleSheet("border-image:url(" + image + ");border:0px;")
+
+    def sensestop(self):
+        quit_msg = "소리감지 기능을 종료하시겠습니까?"
+        reply = QMessageBox.question(self, 'Message', quit_msg, QMessageBox.Yes, QMessageBox.No)
+        if self.threadbool == True and reply == QMessageBox.Yes:
+            self.worker.stop()
+            self.defaultwindow = Default_window()
+            self.close()
+            self.defaultwindow.exec()
+
+########### 기본 감지 인공지능 백그라운드 실행 ############################
 class Aiworker(QThread):
     putimage = pyqtSignal(str,str)
 
@@ -305,7 +441,302 @@ class Aiworker(QThread):
 
 ###################################################################################################################
 ###################################################################################################################
+########### 사이렌 감지 인공지능 백그라운드 실행 ############################
+class Aiworker_2(QThread):
+    putimage = pyqtSignal(str,str)
 
+    max_pad_len = 87
+    num_rows = 40
+    num_columns = 87
+    num_channels = 1
+    default_model = load_model(".//models//siren_mfcc.h5")
+    def __init__(self):
+        super().__init__()
+        self.power=True
+
+    def run(self):
+        while self.power:
+            CHUNK = 1024
+            FORMAT = pyaudio.paInt16
+            CHANNELS = 1
+            RATE = 44100
+            RECORD_SECONDS = 2
+            WAVE_OUTPUT_FILENAME = "./this.wav"
+
+            p= pyaudio.PyAudio()
+            stream = p.open(format=FORMAT, channels=CHANNELS, rate = RATE,input=True, frames_per_buffer=CHUNK)   #요기가 지금 안됌
+            print("* recording")
+
+            frames=[]
+
+            for i in range(0, int(RATE/CHUNK*RECORD_SECONDS)):
+                data = stream.read(CHUNK)
+                frames.append(data)
+
+            print("*done recording")
+
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            wf=wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+            wf.setnchannels(CHANNELS)
+            wf.setsampwidth(p.get_sample_size(FORMAT))
+            wf.setframerate(RATE)
+            wf.writeframes(b''.join(frames))
+            wf.close()
+            filename='this.wav'
+            answer = self.print_prediction(filename)
+            if (answer == 0):  # burglar_alarm
+                print("burglar_alarm")
+                self.putimage.emit("도난경보 소리", ".//resource//burglar.png")
+                time.sleep(5.0)
+            elif (answer == 1):  # emergency_alarm
+                print("emergency_alarm")
+                self.putimage.emit("응급경보 소리", ".//resource//emergency.png")
+                time.sleep(5.0)
+            elif (answer == 2):  # fire_alarm
+                print("fire_alarm")
+                self.putimage.emit("화재경보 소리",".//resource//fire.png")
+                time.sleep(5.0)
+            elif (answer == 3):  # other
+                print("other")
+                self.putimage.emit("사이렌 감지 모드가 실행 중 입니다.",".//resource//gamzi.png")
+                time.sleep(1.0)
+            elif (answer == 10):  # 0.99미만
+                print("0.99미만")
+                self.putimage.emit("사이렌 감지 모드가 실행 중 입니다.",".//resource//gamzi.png")
+                time.sleep(1.0)
+
+    def stop(self):
+        self.power=False
+        self.quit()
+        self.wait(3000)
+        time.sleep(2.0)
+
+
+    ################## 특징 추출 함수 ######################
+
+    def mfcc_extraction(self, file_name):
+
+        try:
+            audio, sample_rate = librosa.load(file_name, res_type='kaiser_fast')
+            mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+            pad_width = self.max_pad_len - mfccs.shape[1]
+            mfccs = np.pad(mfccs, pad_width=((0, 0), (0, pad_width)), mode='constant')
+
+        except Exception as e:
+            print("Error 발생: ", file_name)
+            return None
+
+        return mfccs
+
+    ################## 추론하는 함수 #####################
+
+    def print_prediction(self, file_name):
+        prediction_feature = self.mfcc_extraction(file_name)
+        prediction_feature = prediction_feature.reshape(1, self.num_rows, self.num_columns, self.num_channels)
+        y_prob = self.default_model.predict(prediction_feature)
+        predicted_vector = y_prob.argmax(axis=-1)  # predicter_vector가 가장 높은 클래스
+        predicted_proba_vector = self.default_model.predict(prediction_feature)
+        predicted_proba = predicted_proba_vector[0]  # 정확도 추출
+        if (predicted_proba[predicted_vector]<0.99):  # 가장 정확도 높은 클래스의 정확도 실수값
+            return 10
+        return predicted_vector
+
+
+######################################################################################################################
+########### 아기울음소리 감지 인공지능 백그라운드 실행 ############################
+class Aiworker_3(QThread):
+    putimage = pyqtSignal(str,str)
+
+    max_pad_len = 87
+    num_rows = 40
+    num_columns = 87
+    num_channels = 1
+    default_model = load_model(".//models//babycry_mfcc.h5")
+    def __init__(self):
+        super().__init__()
+        self.power=True
+
+    def run(self):
+        while self.power:
+            CHUNK = 1024
+            FORMAT = pyaudio.paInt16
+            CHANNELS = 1
+            RATE = 44100
+            RECORD_SECONDS = 2
+            WAVE_OUTPUT_FILENAME = "./this.wav"
+
+            p= pyaudio.PyAudio()
+            stream = p.open(format=FORMAT, channels=CHANNELS, rate = RATE,input=True, frames_per_buffer=CHUNK)
+            print("* recording")
+
+            frames=[]
+
+            for i in range(0, int(RATE/CHUNK*RECORD_SECONDS)):
+                data = stream.read(CHUNK)
+                frames.append(data)
+
+            print("*done recording")
+
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            wf=wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+            wf.setnchannels(CHANNELS)
+            wf.setsampwidth(p.get_sample_size(FORMAT))
+            wf.setframerate(RATE)
+            wf.writeframes(b''.join(frames))
+            wf.close()
+            filename='this.wav'
+            answer = self.print_prediction(filename)
+            if (answer == 0):  # babycry
+                print("babycry")
+                self.putimage.emit("아기울음 소리", ".//resource//babycryim.png")
+                time.sleep(5.0)
+            elif (answer == 1):  # other
+                print("other")
+                self.putimage.emit("아기울음소리 감지 모드가 실행 중 입니다.", ".//resource//gamzi.png")
+                time.sleep(1.0)
+            elif (answer == 10):  # 0.99미만
+                print("0.99미만")
+                self.putimage.emit("아기울음소리 감지 모드가 실행 중 입니다.",".//resource//gamzi.png")
+                time.sleep(1.0)
+
+    def stop(self):
+        self.power=False
+        self.quit()
+        self.wait(3000)
+        time.sleep(2.0)
+
+
+    ################## 특징 추출 함수 ######################
+
+    def mfcc_extraction(self, file_name):
+
+        try:
+            audio, sample_rate = librosa.load(file_name, res_type='kaiser_fast')
+            mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+            pad_width = self.max_pad_len - mfccs.shape[1]
+            mfccs = np.pad(mfccs, pad_width=((0, 0), (0, pad_width)), mode='constant')
+
+        except Exception as e:
+            print("Error 발생: ", file_name)
+            return None
+
+        return mfccs
+
+    ################## 추론하는 함수 #####################
+
+    def print_prediction(self, file_name):
+        prediction_feature = self.mfcc_extraction(file_name)
+        prediction_feature = prediction_feature.reshape(1, self.num_rows, self.num_columns, self.num_channels)
+        y_prob = self.default_model.predict(prediction_feature)
+        predicted_vector = y_prob.argmax(axis=-1)  # predicter_vector가 가장 높은 클래스
+        predicted_proba_vector = self.default_model.predict(prediction_feature)
+        predicted_proba = predicted_proba_vector[0]  # 정확도 추출
+        if (predicted_proba[predicted_vector]<0.95):  # 가장 정확도 높은 클래스의 정확도 실수값
+            return 10
+        return predicted_vector
+
+
+######################################################################################################################
+########### 비명 감지 인공지능 백그라운드 실행 ############################
+class Aiworker_4(QThread):
+    putimage = pyqtSignal(str,str)
+
+    max_pad_len = 87
+    num_rows = 40
+    num_columns = 87
+    num_channels = 1
+    default_model = load_model(".//models//scream_mfcc.h5")
+    def __init__(self):
+        super().__init__()
+        self.power=True
+
+    def run(self):
+        while self.power:
+            CHUNK = 1024
+            FORMAT = pyaudio.paInt16
+            CHANNELS = 1
+            RATE = 44100
+            RECORD_SECONDS = 2
+            WAVE_OUTPUT_FILENAME = "./this.wav"
+
+            p= pyaudio.PyAudio()
+            stream = p.open(format=FORMAT, channels=CHANNELS, rate = RATE,input=True, frames_per_buffer=CHUNK)
+            print("* recording")
+
+            frames=[]
+
+            for i in range(0, int(RATE/CHUNK*RECORD_SECONDS)):
+                data = stream.read(CHUNK)
+                frames.append(data)
+
+            print("*done recording")
+
+            stream.stop_stream()
+            stream.close()
+            p.terminate()
+            wf=wave.open(WAVE_OUTPUT_FILENAME, 'wb')
+            wf.setnchannels(CHANNELS)
+            wf.setsampwidth(p.get_sample_size(FORMAT))
+            wf.setframerate(RATE)
+            wf.writeframes(b''.join(frames))
+            wf.close()
+            filename='this.wav'
+            answer = self.print_prediction(filename)
+            if (answer == 0):  # other
+                print("other")
+                self.putimage.emit("비명 감지 모드가 실행 중 입니다.", ".//resource//gamzi.png")
+                time.sleep(1.0)
+            elif (answer == 1):  # scream
+                print("scream")
+                self.putimage.emit("비명 소리", ".//resource//screamim.png")
+                time.sleep(1.0)
+            elif (answer == 10):  # 0.90미만
+                print("0.90미만")
+                self.putimage.emit("비명 감지 모드가 실행 중 입니다.",".//resource//gamzi.png")
+                time.sleep(1.0)
+
+    def stop(self):
+        self.power=False
+        self.quit()
+        self.wait(3000)
+        time.sleep(2.0)
+
+
+    ################## 특징 추출 함수 ######################
+
+    def mfcc_extraction(self, file_name):
+
+        try:
+            audio, sample_rate = librosa.load(file_name, res_type='kaiser_fast')
+            mfccs = librosa.feature.mfcc(y=audio, sr=sample_rate, n_mfcc=40)
+            pad_width = self.max_pad_len - mfccs.shape[1]
+            mfccs = np.pad(mfccs, pad_width=((0, 0), (0, pad_width)), mode='constant')
+
+        except Exception as e:
+            print("Error 발생: ", file_name)
+            return None
+
+        return mfccs
+
+    ################## 추론하는 함수 #####################
+
+    def print_prediction(self, file_name):
+        prediction_feature = self.mfcc_extraction(file_name)
+        prediction_feature = prediction_feature.reshape(1, self.num_rows, self.num_columns, self.num_channels)
+        y_prob = self.default_model.predict(prediction_feature)
+        predicted_vector = y_prob.argmax(axis=-1)  # predicter_vector가 가장 높은 클래스
+        predicted_proba_vector = self.default_model.predict(prediction_feature)
+        predicted_proba = predicted_proba_vector[0]  # 정확도 추출
+        if (predicted_proba[predicted_vector]<0.90):  # 가장 정확도 높은 클래스의 정확도 실수값
+            return 10
+        return predicted_vector
+
+
+######################################################################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     fontDB = QFontDatabase()
