@@ -6,6 +6,8 @@ import pyaudio
 import wave
 import librosa
 import numpy as np
+import pandas as pd
+import random
 
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtCore, QtGui
@@ -71,6 +73,11 @@ class Main(QDialog, QWidget, form_main_class):
         self.close()
 ##############################################################################################
 class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
+
+    list=[]
+    list_q=[]
+    list_bool=[False,False,False,False,False,False,False,False,False,False]
+    count=0
     def __init__(self):
         super(Hearstudy_window, self).__init__()
         self.initUI()
@@ -80,9 +87,158 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
         self.setupUi(self)
         self.setWindowFlag((QtCore.Qt.FramelessWindowHint))
         self.label_5.setFont(QtGui.QFont("12롯데마트드림Bold", 18))
+        self.label_6.setFont(QtGui.QFont("12롯데마트드림Bold", 14))
+        self.pushButton_7.setEnabled(False)
+        self.pushButton_7.setStyleSheet('background : transparent')
+        self.pushButton_8.setEnabled(False)
+        self.pushButton_8.setStyleSheet('background : transparent')
+        self.pushButton_9.setEnabled(False)
+        self.pushButton_9.setStyleSheet('background : transparent')
+
+        path = ".//question//sound.csv"
+        question = pd.read_csv(path, encoding='cp949')
+        ran_num = random.randint(0, 29)
+
+        for i in range(10):
+            while ran_num in self.list:
+                ran_num = random.randint(0, 9)
+            self.list.append(ran_num)
+            self.list_q.append([question['answer'][ran_num], question['a1'][ran_num], question['a2'][ran_num],
+                           question['a3'][ran_num], question['a4'][ran_num], question['filename'][ran_num]])
+
+        self.label_5.setText("Q1. 다음 소리를 듣고 해당하는 답을 고르세요.")
+        self.pushButton_2.setText("1번 "+self.list_q[self.count][1])
+        self.pushButton_4.setText("2번 " + self.list_q[self.count][2])
+        self.pushButton_5.setText("3번 " + self.list_q[self.count][3])
+        self.pushButton_6.setText("4번 " + self.list_q[self.count][4])
+
 
     def toSelectstudy(self):
         self.close()
+
+    def backQ(self):
+        self.count = self.count - 1
+
+        if(self.count==0):
+            self.pushButton_8.setEnabled(False)
+            self.pushButton_8.setStyleSheet('background : transparent')
+
+
+        if (self.list_bool[self.count] == True):
+            self.pushButton_7.setEnabled(True)
+        else:
+            self.pushButton_7.setEnabled(False)
+
+        if (self.count < 9):
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_7.setStyleSheet('border-image:url(".//resource//right.png");background : transparent')
+
+        self.label_5.setText("Q" + str(self.count + 1) + ". 다음 소리를 듣고 해당하는 답을 고르세요.")
+        self.pushButton_2.setText("1번 " + self.list_q[self.count][1])
+        self.pushButton_4.setText("2번 " + self.list_q[self.count][2])
+        self.pushButton_5.setText("3번 " + self.list_q[self.count][3])
+        self.pushButton_6.setText("4번 " + self.list_q[self.count][4])
+        self.label_6.setText("")
+
+
+    def nextQ(self):
+        self.count = self.count + 1
+        if(self.list_bool[self.count]==True):
+            self.pushButton_7.setEnabled(True)
+        else:
+            self.pushButton_7.setEnabled(False)
+
+        if(self.count==9):
+            self.pushButton_7.setEnabled(False)
+            self.pushButton_7.setStyleSheet('background : transparent')
+
+        if(self.count>0):
+            self.pushButton_8.setEnabled(True)
+            self.pushButton_8.setStyleSheet('border-image:url(".//resource//left.png");background : transparent')
+
+        self.label_5.setText("Q"+str(self.count+1)+". 다음 소리를 듣고 해당하는 답을 고르세요.")
+        self.pushButton_2.setText("1번 " + self.list_q[self.count][1])
+        self.pushButton_4.setText("2번 " + self.list_q[self.count][2])
+        self.pushButton_5.setText("3번 " + self.list_q[self.count][3])
+        self.pushButton_6.setText("4번 " + self.list_q[self.count][4])
+        self.label_6.setText("")
+
+
+    def q1(self):
+        if((self.list_q[self.count][0] == 1) and self.count<9):
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_7.setStyleSheet('border-image:url(".//resource//right.png");background : transparent')
+            self.list_bool[self.count]=True
+            self.label_6.setText("정답입니다. 다음 문제로 이동해주세요.")
+        elif(self.count<9):
+            self.label_6.setText("1번은 오답입니다.")
+
+        if ((self.list_q[self.count][0] == 1) and self.count==9):
+            self.pushButton_9.setEnabled(True)
+            self.label_6.setText("정답입니다. 10문제를 모두 푸셨습니다.")
+            self.pushButton_9.setStyleSheet('border-style:solid;border-color:rgb(0,101,51);border-width:2px;border-radius:3px;background : transparent')
+            self.pushButton_9.setText("퀴즈 종료하기")
+        elif (self.count == 9):
+            self.label_6.setText("1번은 오답입니다.")
+
+
+    def q2(self):
+        if ((self.list_q[self.count][0] == 2) and self.count<9):
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_7.setStyleSheet('border-image:url(".//resource//right.png");background : transparent')
+            self.list_bool[self.count] = True
+            self.label_6.setText("정답입니다. 다음 문제로 이동해주세요.")
+
+        elif(self.count<9):
+            self.label_6.setText("2번은 오답입니다.")
+
+        if ((self.list_q[self.count][0] == 2) and self.count==9):
+            self.pushButton_9.setEnabled(True)
+            self.label_6.setText("정답입니다. 10문제를 모두 푸셨습니다.")
+            self.pushButton_9.setStyleSheet('border-style:solid;border-color:rgb(0,101,51);border-width:2px;border-radius:3px;background : transparent')
+            self.pushButton_9.setText("퀴즈 종료하기")
+        elif (self.count == 9):
+            self.label_6.setText("2번은 오답입니다.")
+
+    def q3(self):
+        if ((self.list_q[self.count][0] == 3) and self.count<9):
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_7.setStyleSheet('border-image:url(".//resource//right.png");background : transparent')
+            self.list_bool[self.count] = True
+            self.label_6.setText("정답입니다. 다음 문제로 이동해주세요.")
+
+        elif(self.count<9):
+            self.label_6.setText("3번은 오답입니다.")
+
+        if ((self.list_q[self.count][0] == 3) and self.count==9):
+            self.pushButton_9.setEnabled(True)
+            self.label_6.setText("정답입니다. 10문제를 모두 푸셨습니다.")
+            self.pushButton_9.setStyleSheet('border-style:solid;border-color:rgb(0,101,51);border-width:2px;border-radius:3px;background : transparent')
+            self.pushButton_9.setText("퀴즈 종료하기")
+        elif (self.count == 9):
+            self.label_6.setText("3번은 오답입니다.")
+
+    def q4(self):
+        if ((self.list_q[self.count][0] == 4) and self.count<9):
+            self.pushButton_7.setEnabled(True)
+            self.pushButton_7.setStyleSheet('border-image:url(".//resource//right.png");background : transparent')
+            self.list_bool[self.count] = True
+            self.label_6.setText("정답입니다. 다음 문제로 이동해주세요.")
+
+        elif(self.count<9):
+            self.label_6.setText("4번은 오답입니다.")
+
+        if ((self.list_q[self.count][0] == 4) and self.count==9):
+            self.pushButton_9.setEnabled(True)
+            self.label_6.setText("정답입니다. 10문제를 모두 푸셨습니다.")
+            self.pushButton_9.setStyleSheet('border-style:solid;border-color:rgb(0,101,51);border-width:2px;border-radius:3px;background : transparent')
+            self.pushButton_9.setText("퀴즈 종료하기")
+        elif(self.count==9):
+            self.label_6.setText("4번은 오답입니다.")
+
+    def finish(self):
+        self.close()
+
 
 
 
@@ -178,6 +334,7 @@ class Default_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("기본 감지 모드가 실행 중 입니다.")
         self.threadbool=True
         self.worker.putimage.connect(self.putimage)
+        self.pushButton.setEnabled(False)
         self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
 
 
@@ -226,6 +383,7 @@ class Siren_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("사이렌 감지 모드가 실행 중 입니다.")
         self.threadbool = True
         self.worker.putimage.connect(self.putimage)
+        self.pushButton.setEnabled(False)
         self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
 
     def putimage(self, what, image):
@@ -267,6 +425,7 @@ class Babycry_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("아기울음소리 감지 모드가 실행 중 입니다.")
         self.threadbool = True
         self.worker.putimage.connect(self.putimage)
+        self.pushButton.setEnabled(False)
         self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
 
     def putimage(self, what, image):
@@ -308,6 +467,7 @@ class Scream_window(QDialog, QWidget, form_nowtrain_class):
         self.label_5.setText("비명 감지 모드가 실행 중 입니다.")
         self.threadbool = True
         self.worker.putimage.connect(self.putimage)
+        self.pushButton.setEnabled(False)
         self.pushButton.setStyleSheet('border-image:url(".//resource//gamzi.png");border:0px;')
 
     def putimage(self, what, image):
@@ -737,6 +897,29 @@ class Aiworker_4(QThread):
 
 
 ######################################################################################################################
+class Hearworker_sound(QThread):
+    putquestion = pyqtSignal(list)
+    def __init__(self):
+        super().__init__()
+        path = ".//question//sound.csv"
+        question = pd.read_csv(path, encoding='cp949')
+
+        list=[]
+        ran_num=random.radnint(0,29)
+
+        for i in range(10):
+            while ran_num in list:
+                ran_num = random.randint(0, 9)
+            list.append([question['answer'][ran_num], question['a1'][ran_num], question['a2'][ran_num],
+                         question['a3'][ran_num], question['a4'][ran_num], question['filename'][ran_num]])
+
+
+
+
+
+
+
+########################################################################################################################
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     fontDB = QFontDatabase()
