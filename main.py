@@ -6,8 +6,10 @@ import pyaudio
 import wave
 import librosa
 import numpy as np
+
 import pandas as pd
 import random
+import pygame.mixer
 
 from PyQt5.QtWidgets import *
 from PyQt5 import uic, QtCore, QtGui
@@ -49,6 +51,7 @@ form_hearstudy_class = uic.loadUiType(form_hearstudy)[0]
 
 ##############################################################################
 class Main(QDialog, QWidget, form_main_class):
+
     def __init__(self):
         super().__init__()
         self.initUI()
@@ -73,11 +76,12 @@ class Main(QDialog, QWidget, form_main_class):
         self.close()
 ##############################################################################################
 class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
-
+    mysound=''
     list=[]
     list_q=[]
     list_bool=[False,False,False,False,False,False,False,False,False,False]
     count=0
+    sound_bool=False
     def __init__(self):
         super(Hearstudy_window, self).__init__()
         self.initUI()
@@ -112,13 +116,17 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
         self.pushButton_5.setText("3번 " + self.list_q[self.count][3])
         self.pushButton_6.setText("4번 " + self.list_q[self.count][4])
 
+        pygame.init()
+        self.mysound = pygame.mixer.Sound(".//hearsound//" + self.list_q[self.count][5])
+
 
     def toSelectstudy(self):
         self.close()
 
     def backQ(self):
         self.count = self.count - 1
-
+        pygame.init()
+        self.mysound = pygame.mixer.Sound(".//hearsound//" + self.list_q[self.count][5])
         if(self.count==0):
             self.pushButton_8.setEnabled(False)
             self.pushButton_8.setStyleSheet('background : transparent')
@@ -143,6 +151,8 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
 
     def nextQ(self):
         self.count = self.count + 1
+        pygame.init()
+        self.mysound = pygame.mixer.Sound(".//hearsound//" + self.list_q[self.count][5])
         if(self.list_bool[self.count]==True):
             self.pushButton_7.setEnabled(True)
         else:
@@ -238,6 +248,23 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
 
     def finish(self):
         self.close()
+
+    def soundplay(self):
+        if (self.sound_bool == False):
+            self.pushButton.setStyleSheet('border-image:url(".//resource//stopbutton.png");background : transparent')
+            self.sound_bool = True
+            self.mysound.play()
+            self.sound_bool = False
+        else:
+            self.pushButton.setStyleSheet('border-image:url(".//resource//playbutton.png");background : transparent')
+            self.sound_bool = False
+            self.mysound.stop()
+
+
+
+
+
+
 
 
 
@@ -897,23 +924,6 @@ class Aiworker_4(QThread):
 
 
 ######################################################################################################################
-class Hearworker_sound(QThread):
-    putquestion = pyqtSignal(list)
-    def __init__(self):
-        super().__init__()
-        path = ".//question//sound.csv"
-        question = pd.read_csv(path, encoding='cp949')
-
-        list=[]
-        ran_num=random.radnint(0,29)
-
-        for i in range(10):
-            while ran_num in list:
-                ran_num = random.randint(0, 9)
-            list.append([question['answer'][ran_num], question['a1'][ran_num], question['a2'][ran_num],
-                         question['a3'][ran_num], question['a4'][ran_num], question['filename'][ran_num]])
-
-
 
 
 

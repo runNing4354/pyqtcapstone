@@ -438,6 +438,22 @@ background : transparent</string>
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>pushButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Form</receiver>
+   <slot>soundplay()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>656</x>
+     <y>348</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>729</x>
+     <y>-58</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>toSelectstudy()</slot>
@@ -448,5 +464,6 @@ background : transparent</string>
   <slot>q3()</slot>
   <slot>q4()</slot>
   <slot>finish()</slot>
+  <slot>soundplay()</slot>
  </slots>
 </ui>
