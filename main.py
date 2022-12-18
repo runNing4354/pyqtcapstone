@@ -124,6 +124,8 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
         self.close()
 
     def backQ(self):
+        if (self.sound_bool == True):
+            self.mysound.stop()
         self.count = self.count - 1
         pygame.init()
         self.mysound = pygame.mixer.Sound(".//hearsound//" + self.list_q[self.count][5])
@@ -150,6 +152,8 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
 
 
     def nextQ(self):
+        if(self.sound_bool==True):
+            self.mysound.stop()
         self.count = self.count + 1
         pygame.init()
         self.mysound = pygame.mixer.Sound(".//hearsound//" + self.list_q[self.count][5])
@@ -251,8 +255,7 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
 
     def soundplay(self):
         if (self.sound_bool == False):
-            self.pushButton.setStyleSheet('border-image:url(".//resource//stopbutton.png");background : transparent')
-            self.sound_bool = True
+            self.sound_bool=True
             self.mysound.play()
             self.sound_bool = False
         else:
