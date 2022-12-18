@@ -105,7 +105,7 @@ class Hearstudy_window(QDialog, QWidget, form_hearstudy_class):
 
         for i in range(10):
             while ran_num in self.list:
-                ran_num = random.randint(0, 9)
+                ran_num = random.randint(0, 29)
             self.list.append(ran_num)
             self.list_q.append([question['answer'][ran_num], question['a1'][ran_num], question['a2'][ran_num],
                            question['a3'][ran_num], question['a4'][ran_num], question['filename'][ran_num]])
