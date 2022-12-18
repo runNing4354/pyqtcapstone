@@ -26,8 +26,7 @@
    <string>Form</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">
-</string>
+   <string notr="true"/>
   </property>
   <widget class="QLabel" name="label_4">
    <property name="geometry">
@@ -113,8 +112,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//playbutton.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//playbutton.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_playbutton.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -130,8 +135,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//stopbutton.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//stopbutton.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_stopbutton.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -147,8 +158,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//backbutton.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//backbutton.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_backbutton.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>

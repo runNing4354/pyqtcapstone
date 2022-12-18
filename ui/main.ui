@@ -62,7 +62,12 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//train_2.png&quot;);</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//train_2.png&quot;);
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_train_2.png&quot;);
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -90,7 +95,12 @@
     </size>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//sense.png&quot;);</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//sense.png&quot;);
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_sense.png&quot;);
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -167,7 +177,12 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//close.png&quot;);</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//close.png&quot;);
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_close.png&quot;);
+}</string>
    </property>
    <property name="text">
     <string/>

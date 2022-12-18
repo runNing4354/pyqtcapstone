@@ -71,8 +71,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//backbutton.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//backbutton.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_backbutton.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -88,8 +94,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//environment.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//environment.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_environment.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -105,8 +117,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//emotion.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//emotion.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_emotion.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -122,8 +140,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//sound.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//sound.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_sound.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>

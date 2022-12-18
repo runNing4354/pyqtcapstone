@@ -38,8 +38,14 @@
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//default.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//default.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_default.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -55,8 +61,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//siren.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//siren.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_siren.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -72,8 +84,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//babycry.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//babycry.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_babycry.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -89,8 +107,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//scream.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//scream.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_scream.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
@@ -248,8 +272,14 @@ background : transparent</string>
     </rect>
    </property>
    <property name="styleSheet">
-    <string notr="true">border-image:url(&quot;.//resource//backbutton.png&quot;);
-background : transparent</string>
+    <string notr="true">QPushButton{
+border-image:url(&quot;.//resource//backbutton.png&quot;);
+background : transparent
+}
+QPushButton:pressed{
+border-image:url(&quot;.//resource//press_backbutton.png&quot;);
+background : transparent
+}</string>
    </property>
    <property name="text">
     <string/>
